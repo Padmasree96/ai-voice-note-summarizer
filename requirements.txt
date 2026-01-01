@@ -1,0 +1,6 @@
+streamlit==1.31.0
+SpeechRecognition==3.10.0
+transformers==4.36.2
+torch
+pydub
+googletrans==4.0.0-rc1
