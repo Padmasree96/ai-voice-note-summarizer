@@ -1,11 +1,11 @@
 AI Voice Note Summarizer
 ---
-1. Project Overview
+##1. Project Overview
 
 AI Voice Note Summarizer is an artificial intelligence–based application that converts Tamil voice recordings into English text and generates a concise summary of the spoken content.
 This project helps users easily understand long voice notes without listening to the entire audio.
-
-2. Objectives
+----
+##2. Objectives
 
 To convert Tamil speech into English text
 
@@ -15,7 +15,8 @@ To apply speech recognition and natural language processing techniques
 
 To provide a simple and user-friendly interface
 
-3. System Workflow
+---
+##3. System Workflow
 
 The user uploads a Tamil voice audio file
 
@@ -25,7 +26,8 @@ The summarization model analyzes the text
 
 A concise summary is generated and displayed
 
-4. Technologies Used
+----
+##4. Technologies Used
 
 Python
 
@@ -37,7 +39,8 @@ Gradio (User Interface)
 
 PyTorch
 
-5. Features
+----
+##5. Features
 
 Supports Tamil voice input
 
@@ -49,7 +52,8 @@ Accepts WAV and MP3 audio formats
 
 Easy-to-use interface
 
-6. Accuracy and Performance
+---
+##6. Accuracy and Performance
 
 The system was evaluated using real-time Tamil voice samples.
 
@@ -61,7 +65,8 @@ Summarization retains key information
 
 The system performs reliably for practical voice note summarization tasks.
 
-7. Applications
+---
+##7. Applications
 
 Voice note summarization
 
@@ -71,7 +76,8 @@ Meeting and lecture summaries
 
 Language translation assistance
 
-8. Project Structure
+---
+##8. Project Structure
 AI_Voice_Note_Summarizer/
 
 │
@@ -83,7 +89,7 @@ AI_Voice_Note_Summarizer/
 ├── README.pdf
 
 └── description.txt
-
-10. Author
+---
+##9. Author
 
 Padmasree Rajavel
