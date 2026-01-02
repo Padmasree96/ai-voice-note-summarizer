@@ -1,50 +1,52 @@
 import gradio as gr
+import whisper
 from transformers import pipeline
 
-# Load models (cached automatically on HF Spaces)
-speech_to_text = pipeline(
-    "automatic-speech-recognition",
-    model="openai/whisper-small"
-)
+# Load Whisper model (Speech → English Translation)
+whisper_model = whisper.load_model("base")
 
+# Load Summarization model
 summarizer = pipeline(
     "summarization",
     model="sshleifer/distilbart-cnn-12-6"
 )
 
-def voice_note_summarizer(audio):
-    if audio is None:
-        return "No audio uploaded", ""
+def process_audio(audio_path):
+    if audio_path is None:
+        return "No audio uploaded", "No summary"
 
-    # Speech → Text
-    result = speech_to_text(audio)
-    text = result["text"]
+    # Tamil audio → English text
+    result = whisper_model.transcribe(audio_path, task="translate")
+    english_text = result["text"]
 
-    # If text is short, skip summarization
-    if len(text.split()) < 20:
-        return text, "Text is too short to summarize."
+    if len(english_text.strip()) == 0:
+        return "Speech not recognized", "No summary"
 
-    # Text → Summary
-    summary = summarizer(
-        text,
-        max_length=50,
-        min_length=20,
-        do_sample=False
-    )
+    # Generate summary
+    if len(english_text.split()) < 20:
+        summary_text = "Text is too short to summarize."
+    else:
+        summary = summarizer(
+            english_text,
+            max_length=60,
+            min_length=20,
+            do_sample=False
+        )
+        summary_text = summary[0]["summary_text"]
 
-    return text, summary[0]["summary_text"]
+    return english_text, summary_text
 
 
-# Gradio UI
-interface = gr.Interface(
-    fn=voice_note_summarizer,
-    inputs=gr.Audio(type="filepath", label="Upload Voice Note"),
-    outputs=[
-        gr.Textbox(label="Full Transcription"),
-        gr.Textbox(label="Summary")
-    ],
-    title="AI Voice Note Summarizer",
-    description="Upload a voice note. The app converts speech to text and generates a short summary using AI."
-)
+# UI
+with gr.Blocks() as demo:
+    gr.Markdown("## 🎙️ AI Voice Note Summarizer")
+    gr.Markdown("Tamil voice → English translation → Summary")
 
-interface.launch()
+    audio_input = gr.Audio(type="filepath", label="Upload Tamil Audio")
+    text_output = gr.Textbox(label="English Translation", lines=6)
+    summary_output = gr.Textbox(label="Summary", lines=4)
+
+    btn = gr.Button("Convert & Summarize")
+    btn.click(process_audio, audio_input, [text_output, summary_output])
+
+demo.launch(share=True)
